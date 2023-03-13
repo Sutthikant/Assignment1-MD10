@@ -3,6 +3,46 @@ def test_spaning_tree():
     from matplotlib import pyplot as plt
     import random
 
+    class DisjointSets:
+        def __init__(self, n):
+            self.n = n
+            self.parent = [None] * (self.n + 1)
+            self.size = [1] * (self.n + 1)
+
+        def findRoot(self, node):
+            return node if self.parent[node] == None else self.findRoot(self.parent[node]) 
+
+        def ask(self, a, b):
+            root_a = self.findRoot(a)
+            root_b = self.findRoot(b)
+
+            return root_a == root_b
+
+        def join(self, a, b):
+            root_a = self.findRoot(a)
+            root_b = self.findRoot(b)
+            
+            if root_a == root_b:
+                pass
+            else:
+                if self.size[root_a] >= self.size[root_b]:
+                    self.parent[root_b] = root_a
+                    self.size[root_a] += self.size[root_b]
+                else:
+                    self.parent[root_a] = root_b
+                    self.size[root_b] += self.size[root_a]
+    def kruskal(graph):
+        edges = sorted(graph, key=lambda edge: edge[2])
+        mst = []
+        ds = DisjointSets()
+        total_cost = 0
+        for (a, b, w) in edges:
+            if not ds.ask(a, b):
+                mst.append((a, b, w))
+                total_cost += w
+                ds.join(a, b)
+        return total_cost
+
     G = nx.Graph()
 
     n = 6
@@ -22,16 +62,8 @@ def test_spaning_tree():
     # create a minimum spanning tree
     T = nx.minimum_spanning_tree(G)
 
-    sum_path = []
-    for i1 in range(len(edges)):
-        for i2 in range(i1 + 1, len(edges)):
-            for i3 in range(i2 + 1, len(edges)):
-                for i4 in range(i3 + 1, len(edges)):
-                    for i5 in range(i4 + 1, len(edges)):
-                        sum_path.append(int(edges[i1][2] + edges[i2][2] + edges[i3][2] + edges[i4][2] + edges[i5][2]))
-    # print(min(sum_path))
     # print(nx.tree.branching_weight(T))
 
-    assert min(sum_path) == nx.tree.branching_weight(T)
+    assert kruskal(edges) == nx.tree.branching_weight(T)
 
 
