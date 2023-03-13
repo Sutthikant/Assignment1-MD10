@@ -41,5 +41,5 @@ nx.draw(T, with_labels=True, pos=vertex_pos)
 nx.draw_networkx_edges(T, pos=vertex_pos, edge_color='r')
 nx.draw_networkx_edge_labels(T, pos=vertex_pos, edge_labels=nx.get_edge_attributes(T,'weight'))
 
-plt.savefig("graph-with-mst.png")
+plt.savefig("graph-with-mst-2.png")
 plt.show()
