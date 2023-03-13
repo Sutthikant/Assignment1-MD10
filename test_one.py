@@ -34,7 +34,7 @@ def test_spaning_tree():
     def kruskal(graph):
         edges = sorted(graph, key=lambda edge: edge[2])
         mst = []
-        ds = DisjointSets()
+        ds = DisjointSets(len(graph))
         total_cost = 0
         for (a, b, w) in edges:
             if not ds.ask(a, b):
